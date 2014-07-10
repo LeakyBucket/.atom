@@ -12,4 +12,4 @@
 'whitespace':
   'ignoreWhitespaceOnCurrentLine': false
 'ruby-test':
-  'rspecAllCommand': 'rspec'
+  'rspecAllCommand': 'bundle exec rspec --tty'
