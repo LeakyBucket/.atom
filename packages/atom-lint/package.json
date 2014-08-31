@@ -1,7 +1,7 @@
 {
   "name": "atom-lint",
   "main": "./lib/atom-lint",
-  "version": "0.14.2",
+  "version": "0.14.3",
   "private": true,
   "description": "Generic code linting support, including RuboCop, flake8, JSHint, CoffeeLint, etc.",
   "repository": {
@@ -33,10 +33,10 @@
     "url": "https://github.com/yujinakayama/atom-lint/issues"
   },
   "homepage": "https://github.com/yujinakayama/atom-lint",
-  "_id": "atom-lint@0.14.2",
+  "_id": "atom-lint@0.14.3",
   "dist": {
-    "shasum": "bf87f17ab9b06322695dda68286c2736d8089eec"
+    "shasum": "1851f72b7fac902da5a996a166127659113be8d1"
   },
-  "_resolved": "/var/folders/kj/9j3k222j6gvdcp37_3_ncz1h0000gn/T/d-114626-3689-zz4tdz/package.tgz",
-  "_from": "/var/folders/kj/9j3k222j6gvdcp37_3_ncz1h0000gn/T/d-114626-3689-zz4tdz/package.tgz"
+  "_resolved": "/var/folders/9s/n1mwy1ms6_v_y2rtwjg02wn80000gn/T/d-114629-34490-1m4zm7/package.tgz",
+  "_from": "/var/folders/9s/n1mwy1ms6_v_y2rtwjg02wn80000gn/T/d-114629-34490-1m4zm7/package.tgz"
 }

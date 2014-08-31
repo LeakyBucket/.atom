@@ -3,7 +3,6 @@ os = require 'os'
 path = require 'path'
 fs = require 'fs'
 _ = require 'lodash'
-{$} = require 'atom'
 
 each_slice = (array, size, callback) ->
   for i in [0..array.length] by size
@@ -67,8 +66,10 @@ class CommandRunner
   @getEnv: (callback) ->
     if @_cachedEnv == undefined
       @fetchEnvOfLoginShell (error, env) =>
+        console.log(error.stack) if error?
         env ?= {}
         @_cachedEnv = @mergePathEnvs(env, process.env)
+        @_cachedEnv['HOME'] = process.env.HOME
         callback(@_cachedEnv)
     else
       callback(@_cachedEnv)
@@ -77,7 +78,6 @@ class CommandRunner
 
   run: (callback) ->
     CommandRunner.getEnv (env) =>
-      env ?= process.env
       @runWithEnv(env, callback)
 
   runWithEnv: (env, callback) ->
