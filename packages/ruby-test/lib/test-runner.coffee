@@ -11,16 +11,15 @@ module.exports =
       @testParams = new SourceInfo()
 
     run: ->
-      @shell = new ShellRunner(@shellRunnerParams())
+      shell = new ShellRunner(@shellRunnerParams())
       @params.setTestInfo(@command())
-      @shell.run()
+      shell.run()
 
     shellRunnerParams: ->
       write:   @params.write
       exit:    @params.exit
       command: @command
       cwd:     @testParams.cwd
-      currentShell: @testParams.currentShell()
 
     command: =>
       cmd = if @params.testScope == "single"
@@ -31,6 +30,3 @@ module.exports =
           @testParams.testFileCommand()
       cmd.replace('{relative_path}', @testParams.activeFile()).
           replace('{line_number}', @testParams.currentLine())
-
-    cancel: ->
-      @shell.kill()

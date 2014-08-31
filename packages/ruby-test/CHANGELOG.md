@@ -1,21 +1,6 @@
 # Change Log
 
-## Version 0.9.1
-
-* Fix switching shells
-* Fix shell startup invocation
-
-## Version 0.9.0
-
-* Configurable shell. Supports bash, zsh.
-* Cancel running test with cmd+ctrl+c
-* Save current file before running test
-
-## Version 0.8.0
-
-* Fix query for current row
-
-## Version 0.7.0
+## Version 0.6.1
 
 * Unbuffered, real-time output
 

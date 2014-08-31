@@ -11,7 +11,6 @@ module.exports =
     cucumberAllCommand: "cucumber features"
     cucumberFileCommand: "cucumber {relative_path}"
     cucumberSingleCommand: "cucumber {relative_path}:{line_number}"
-    shell: "bash"
 
   rubyTestView: null
 

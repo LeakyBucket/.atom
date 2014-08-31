@@ -2,20 +2,6 @@
 
 ## Development
 
-## v0.14.5
-
-*  Conform to the change of exit code in SCSSLint 0.26. ([@yujinakayama])
-
-## v0.14.4
-
-* [#80](https://github.com/yujinakayama/atom-lint/pull/80): Fix a bug where fetching login shell's environment variables fails when zsh option `CLOBBER` is unset and a linter is run twice at the same time on launch of Atom. ([@yujinakayama])
-* [#80](https://github.com/yujinakayama/atom-lint/pull/80): Fallback to Atom's environment variables rather than empty ones when failed fetching login shell's ones. ([@yujinakayama])
-* [#80](https://github.com/yujinakayama/atom-lint/pull/80): Avoid wasteful double linting on launch. ([@yujinakayama])
-
-## v0.14.3
-
-* [#80](https://github.com/yujinakayama/atom-lint/pull/80): Fix a bug that couldn't find `HOME` environment using RuboCop. ([@rochefort])
-
 ## v0.14.2
 
 * Fix a bug where linters could not be run when the login shell is zsh and zsh option `CLOBBER` is unset. ([@yujinakayama])
@@ -162,4 +148,3 @@
 [@bryanhunter]: https://github.com/bryanhunter
 [@elrolito]: https://github.com/elrolito
 [@Kev]: https://github.com/Kev
-[@rochefort]: https://github.com/rochefort

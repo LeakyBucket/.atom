@@ -7,9 +7,6 @@ module.exports =
       spec:    'rspec'
       feature: 'cucumber'
 
-    currentShell: ->
-      atom.config.get('ruby-test.shell') || 'bash'
-
     cwd: ->
       atom.project.getPath()
 
@@ -30,7 +27,7 @@ module.exports =
       @_currentLine ||= unless @_currentLine
         editor = atom.workspace.getActiveEditor()
         cursor = editor.getCursor()
-        cursor.getBufferRow() + 1
+        cursor.getScreenRow() + 1
 
     testFramework: ->
       @_testFramework ||= unless @_testFramework

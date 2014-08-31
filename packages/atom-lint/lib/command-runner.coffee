@@ -2,8 +2,8 @@ child_process = require 'child_process'
 os = require 'os'
 path = require 'path'
 fs = require 'fs'
-crypto = require 'crypto'
 _ = require 'lodash'
+{$} = require 'atom'
 
 each_slice = (array, size, callback) ->
   for i in [0..array.length] by size
@@ -14,7 +14,7 @@ module.exports =
 class CommandRunner
   @_cachedEnv = undefined
 
-  @fetchEnvOfLoginShell: (callback) ->
+  @fetchEnvOfLoginShell = (callback) ->
     if !process.env.SHELL
       return callback(new Error("SHELL environment variable is not set."))
 
@@ -22,26 +22,19 @@ class CommandRunner
       # csh/tcsh does not allow to execute a command (-c) in a login shell (-l).
       return callback(new Error("#{process.env.SHELL} is not supported."))
 
-    outputPath = @getEnvOutputFilePath()
+    outputPath = path.join(os.tmpdir(), 'CommandRunner_fetchEnvOfLoginShell.txt')
+    fs.unlinkSync(outputPath) if fs.existsSync(outputPath)
+
     # Running non-shell-builtin command with -i (interactive) option causes shell to freeze with
     # CPU 100%. So we run it in subshell to make it non-interactive.
     command = "#{process.env.SHELL} -l -i -c '$(printenv > #{outputPath})'"
 
     child_process.exec command, (execError, stdout, stderr) =>
       return callback(execError) if execError?
-
       fs.readFile outputPath, (readError, data) =>
-        fs.unlinkSync(outputPath) if fs.existsSync(outputPath)
         return callback(readError) if readError?
-
         env = @parseResultOfPrintEnv(data.toString())
         callback(null, env)
-
-  @getEnvOutputFilePath: ->
-    randomHex = crypto.randomBytes(20).toString('hex')
-    outputPath = path.join(os.tmpdir(), "atom-lint_#{randomHex}.txt")
-    fs.unlinkSync(outputPath) if fs.existsSync(outputPath)
-    outputPath
 
   @parseResultOfPrintEnv: (string) ->
     env = {}
@@ -74,13 +67,8 @@ class CommandRunner
   @getEnv: (callback) ->
     if @_cachedEnv == undefined
       @fetchEnvOfLoginShell (error, env) =>
-        console.log(error.stack) if error?
-
-        if env?
-          @_cachedEnv = @mergePathEnvs(env, process.env)
-        else
-          @_cachedEnv = process.env
-
+        env ?= {}
+        @_cachedEnv = @mergePathEnvs(env, process.env)
         callback(@_cachedEnv)
     else
       callback(@_cachedEnv)
@@ -89,6 +77,7 @@ class CommandRunner
 
   run: (callback) ->
     CommandRunner.getEnv (env) =>
+      env ?= process.env
       @runWithEnv(env, callback)
 
   runWithEnv: (env, callback) ->
