@@ -1,7 +1,7 @@
 {
   "name": "file-icons",
   "main": "./lib/file-icons",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "private": true,
   "description": "Assign file extension icons and colours for improved visual grepping",
   "repository": {
@@ -19,10 +19,10 @@
     "url": "https://github.com/DanBrooker/file-icons/issues"
   },
   "homepage": "https://github.com/DanBrooker/file-icons",
-  "_id": "file-icons@1.3.3",
+  "_id": "file-icons@1.3.4",
   "dist": {
-    "shasum": "d8f87984dc9a013677d819922f2047232a63cfa5"
+    "shasum": "5cc2a7d36a1c416234e45abb5d8a6018f1b33ea5"
   },
   "_resolved": "/tmp/d-114420-25477-k8rnxd/package.tgz",
-  "_from": "/Users/leakybucket/.atom/.node-gyp/.atom/.apm/file-icons/1.3.3/package.tgz"
+  "_from": "/Users/leakybucket/.atom/.node-gyp/.atom/.apm/file-icons/1.3.4/package.tgz"
 }
