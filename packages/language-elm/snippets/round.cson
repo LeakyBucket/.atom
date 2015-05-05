@@ -1,0 +1,4 @@
+'.source.elm':
+  'round : Float -> Int':
+    'prefix': 'round'
+    'body': 'round ${1:float}'

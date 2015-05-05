@@ -1,17 +1,23 @@
-'global':
-  'editor':
-    'fontSize': 12
-  'exception-reporting':
-    'userId': 'ded010c9-4771-09d1-10aa-674d795d0370'
-  'welcome':
-    'showOnStartup': false
-  'metrics':
-    'userId': 'ae961babc3f969a4a4d932151eabf8d7e81bc5c2'
-  'autosave':
-    'enabled': true
-  'whitespace':
-    'ignoreWhitespaceOnCurrentLine': false
-  'ruby-test':
-    'rspecAllCommand': 'bundle exec rspec --tty'
-  'tree-view':
-    'hideVcsIgnoredFiles': true
+"*":
+  editor:
+    fontSize: 12
+    invisibles: {}
+  "exception-reporting":
+    userId: "ded010c9-4771-09d1-10aa-674d795d0370"
+  welcome:
+    showOnStartup: false
+  metrics:
+    userId: "ae961babc3f969a4a4d932151eabf8d7e81bc5c2"
+  autosave:
+    enabled: true
+  whitespace:
+    ignoreWhitespaceOnCurrentLine: false
+  "ruby-test":
+    rspecAllCommand: "bundle exec rspec --tty"
+  "tree-view":
+    hideVcsIgnoredFiles: true
+  core:
+    destroyEmptyPanes: false
+    excludeVcsIgnoredPaths: false
+  "atom-pair": {}
+  "git-diff": {}

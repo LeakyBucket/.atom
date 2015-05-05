@@ -1,0 +1,4 @@
+'.source.elm':
+  'product : [number] -> number':
+    'prefix': 'product'
+    'body': 'product ${1:list}'

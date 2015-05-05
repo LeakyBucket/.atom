@@ -1,6 +1,6 @@
 {
   "name": "language-haml",
-  "version": "0.10.0",
+  "version": "0.20.0",
   "private": true,
   "description": "HAML package for Atom",
   "repository": {
@@ -18,9 +18,18 @@
     "url": "https://github.com/cannikin/language-haml/issues"
   },
   "homepage": "https://github.com/cannikin/language-haml",
-  "_id": "language-haml@0.10.0",
-  "dist": {
-    "shasum": "bcd2d3c3e08d106e516719447bcaf312ff2c42c4"
-  },
-  "_from": "/Users/leakybucket/.atom/.node-gyp/.atom/.apm/language-haml/0.10.0/package.tgz"
+  "_id": "language-haml@0.20.0",
+  "_shasum": "8e685c882b80be8e51ebb9070cc339e7148bbccd",
+  "_resolved": "file:../d-115328-87751-2jbsy8/package.tgz",
+  "_from": "../d-115328-87751-2jbsy8/package.tgz",
+  "_atomModuleCache": {
+    "version": 1,
+    "dependencies": [],
+    "extensions": {
+      ".json": [
+        "package.json"
+      ]
+    },
+    "folders": []
+  }
 }

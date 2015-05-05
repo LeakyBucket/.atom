@@ -1,0 +1,4 @@
+'.source.elm':
+  'toPolar : (Float,Float) -> (Float,Float)':
+    'prefix': 'toPolar'
+    'body': 'toPolar ${1:tuple}'

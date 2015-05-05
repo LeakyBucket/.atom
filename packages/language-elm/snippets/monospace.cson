@@ -1,0 +1,4 @@
+'.source.elm':
+  'monospace : Text -> Text':
+    'prefix': 'monospace'
+    'body': 'monospace ${1:text}'

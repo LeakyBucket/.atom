@@ -1,7 +1,8 @@
 _ = require 'underscore-plus'
-{View} = require 'atom'
+{View} = require 'atom-space-pen-views'
 TestRunner = require './test-runner'
 ResizeHandle = require './resize-handle'
+Utility = require './utility'
 Convert = require 'ansi-to-html'
 
 module.exports =
@@ -12,17 +13,19 @@ class RubyTestView extends View
       @div class: "panel-heading", =>
         @span 'Running tests: '
         @span outlet: 'header'
+        @div class: "heading-buttons pull-right inline-block", =>
+          @div click: 'closePanel', class: "heading-close icon-x inline-block"
       @div class: "panel-body", =>
         @div class: 'ruby-test-spinner', 'Starting...'
         @pre "", outlet: 'results'
 
   initialize: (serializeState) ->
-    atom.workspaceView.command "ruby-test:toggle", => @toggle()
-    atom.workspaceView.command "ruby-test:test-file", => @testFile()
-    atom.workspaceView.command "ruby-test:test-single", => @testSingle()
-    atom.workspaceView.command "ruby-test:test-previous", => @testPrevious()
-    atom.workspaceView.command "ruby-test:test-all", => @testAll()
-    atom.workspaceView.command "ruby-test:cancel", => @cancelTest()
+    atom.commands.add "atom-workspace", "ruby-test:toggle", => @toggle()
+    atom.commands.add "atom-workspace", "ruby-test:test-file", => @testFile()
+    atom.commands.add "atom-workspace", "ruby-test:test-single", => @testSingle()
+    atom.commands.add "atom-workspace", "ruby-test:test-previous", => @testPrevious()
+    atom.commands.add "atom-workspace", "ruby-test:test-all", => @testAll()
+    atom.commands.add "atom-workspace", "ruby-test:cancel", => @cancelTest()
     new ResizeHandle(@)
 
   # Returns an object that can be retrieved when package is activated
@@ -32,6 +35,10 @@ class RubyTestView extends View
   destroy: ->
     @output = ''
     @detach()
+
+  closePanel: ->
+    if @hasParent()
+      @detach()
 
   toggle: ->
     if @hasParent()
@@ -53,12 +60,12 @@ class RubyTestView extends View
 
   testPrevious: ->
     return unless @runner
-    atom.workspace.getActiveEditor().save()
+    @saveFile()
     @newTestView()
     @runner.run()
 
   runTest: (overrideParams) ->
-    atom.workspace.getActiveEditor().save()
+    @saveFile()
     @newTestView()
     params = _.extend({}, @testRunnerParams(), overrideParams || {})
     @runner = new TestRunner(params)
@@ -83,7 +90,7 @@ class RubyTestView extends View
 
   showPanel: ->
     unless @hasParent()
-      atom.workspaceView.prependToBottom(@)
+      atom.workspace.addBottomPanel(item: @)
       @spinner = @find('.ruby-test-spinner')
 
   write: (str) =>
@@ -102,3 +109,7 @@ class RubyTestView extends View
     @runner.cancel()
     @spinner?.hide()
     @write('\nTests canceled')
+
+  saveFile: ->
+    util = new Utility
+    util.saveFile()
