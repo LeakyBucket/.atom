@@ -15,9 +15,15 @@
   "ruby-test":
     rspecAllCommand: "bundle exec rspec --tty"
   "tree-view":
-    hideVcsIgnoredFiles: true
+    hideVcsIgnoredFiles: false
   core:
     destroyEmptyPanes: false
     excludeVcsIgnoredPaths: false
   "atom-pair": {}
   "git-diff": {}
+  "git-blame-plus": {}
+  "one-dark-ui": {}
+  tabs:
+    enableVcsColoring: true
+  "linter-elixirc": {}
+  "git-blame": {}

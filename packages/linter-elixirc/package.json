@@ -1,7 +1,6 @@
 {
   "name": "linter-elixirc",
-  "version": "0.2.1",
-  "activationEvents": [],
+  "version": "0.2.2",
   "linter-package": true,
   "main": "./lib/init",
   "description": "Bare Minimum Elixir lint package",
@@ -20,10 +19,10 @@
     "url": "https://github.com/AtomLinter/linter-elixirc/issues"
   },
   "homepage": "https://github.com/AtomLinter/linter-elixirc",
-  "_id": "linter-elixirc@0.2.1",
-  "_shasum": "b7afa3d96c9216cc99dae87624add7513bd9a057",
-  "_resolved": "file:../d-11527-3739-w1z5sw/package.tgz",
-  "_from": "../d-11527-3739-w1z5sw/package.tgz",
+  "_id": "linter-elixirc@0.2.2",
+  "_shasum": "bc1c0d31a7e939f7d7ffd2a21a06382544858da9",
+  "_resolved": "file:../d-115428-84212-z9ldpq/package.tgz",
+  "_from": "../d-115428-84212-z9ldpq/package.tgz",
   "_atomModuleCache": {
     "version": 1,
     "dependencies": [],

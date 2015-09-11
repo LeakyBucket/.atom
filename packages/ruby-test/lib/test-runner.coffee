@@ -19,7 +19,7 @@ module.exports =
       write:   @params.write
       exit:    @params.exit
       command: @command
-      cwd:     @testParams.cwd
+      cwd:     @testParams.projectPath
       currentShell: @testParams.currentShell()
 
     command: =>
@@ -30,7 +30,8 @@ module.exports =
         else
           @testParams.testFileCommand()
       cmd.replace('{relative_path}', @testParams.activeFile()).
-          replace('{line_number}', @testParams.currentLine())
+          replace('{line_number}', @testParams.currentLine()).
+          replace('{regex}', @testParams.minitestRegExp())
 
     cancel: ->
       @shell.kill()

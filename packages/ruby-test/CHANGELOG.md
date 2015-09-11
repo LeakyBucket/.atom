@@ -1,5 +1,33 @@
 # Change Log
 
+## Version 0.9.13
+
+* Configurable spec framework and test framework (#57)
+
+## Version 0.9.12
+
+* Ability to copy from output pane (#6)
+
+## Version 0.9.11
+
+* Add test runner debug info to console
+
+## Version 0.9.10
+
+* Fix rspec detection (#55)
+
+## Version 0.9.9
+
+* Fix rspec detection (#54)
+
+## Version 0.9.8
+
+* Minitest - run single test
+
+## Version 0.9.7
+
+* Fix cursor function deprecation (#48)
+
 ## Version 0.9.6
 
 * Fix string replacement error (#44)
