@@ -1,5 +1,22 @@
 # Change Log
 
+## Version 0.9.17
+
+* Fix broken test file path calculation for multi-path projects
+* Fix Minitest regular expression calculation for single test executions.
+
+## Version 0.9.16
+
+* Fish support (#31, #72, #73)
+
+## Version 0.9.15
+
+* Correctly determine framework when no test file is open (#70)
+
+## Version 0.9.14
+
+* Correctly detect Cucumber feature file when project has .rspec file (#59)
+
 ## Version 0.9.13
 
 * Configurable spec framework and test framework (#57)

@@ -18,7 +18,7 @@ module.exports =
       @process = @newProcess(@fullCommand())
 
     fullCommand: ->
-      "cd #{@escape(@params.cwd())} && #{@params.command()}; exit\n"
+      @_joinAnd("cd #{@escape(@params.cwd())}", "#{@params.command()}; exit\n")
 
     escape: (str) ->
       charsToEscape = "\\ \t\"'$()[]<>&|*;~`#"
@@ -44,8 +44,12 @@ module.exports =
       command = @currentShell
       args = ['-l', '-c', testCommand]
       options = { cwd: @params.cwd }
-      console.log "ruby-test: Running test: command=", command, ", args=", args, ", cwd=", @params.cwd()
+      console.log "ruby-test: Running test:", {command: command, args: args, cwd: @params.cwd()}
       params = { command, args, options, @stdout, @stderr, @exit }
       outputCharacters = true
       process = new @processor params, outputCharacters
       process
+
+    _joinAnd: (commands...) ->
+      joiner = if /fish/.test(@currentShell) then '; and ' else ' && '
+      commands.join(joiner)
