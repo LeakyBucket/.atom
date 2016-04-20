@@ -13,11 +13,12 @@ module.exports =
     forceElixirc:
       type: 'boolean'
       title: 'Always use elixirc'
-      description: 'Activating this will force plugin to never use `mix compile` and always use `elixirc`.'
+      description: 'Activating this will force the plugin to never use ' +
+        '`mix compile` and always use `elixirc`.'
       default: false
 
   activate: ->
-    require('atom-package-deps').install()
+    require('atom-package-deps').install('linter-elixirc')
     @subscriptions = new CompositeDisposable
     @subscriptions.add atom.config.observe 'linter-elixirc.elixircPath',
       (elixircPath) =>
@@ -28,81 +29,118 @@ module.exports =
     @subscriptions.add atom.config.observe 'linter-elixirc.forceElixirc',
       (forceElixirc) =>
         @forceElixirc = forceElixirc
+
   deactivate: ->
     @subscriptions.dispose()
+
   provideLinter: ->
-    helpers = require('atom-linter')
+    helpers = require 'atom-linter'
     os = require 'os'
     fs = require 'fs'
     path = require 'path'
+
     projectPath = (textEditor) ->
       editorPath = textEditor.getPath()
-      for projectPathCandidate in atom.project.getPaths()
-        if editorPath.indexOf(projectPathCandidate) == 0
-          return projectPathCandidate
+      projPath = atom.project.relativizePath(editorPath)[0]
+      if projPath?
+        return projPath
       null
+
     isMixProject = (textEditor) ->
-      fs.existsSync(projectPath(textEditor) + '/mix.exs')
+      project = projectPath(textEditor)
+      return false if not project
+      return fs.existsSync(path.join(project, 'mix.exs'))
+
     isTestFile = (textEditor) ->
-      relativePath = path.relative(projectPath(textEditor), textEditor.getPath())
+      project = projectPath(textEditor)
+      return false if not project
+      relativePath = path.relative(project, textEditor.getPath())
       relativePath.split(path.sep)[0] == 'test'
+
     isForcedElixirc = =>
       @forceElixirc
+
     isExsFile = (textEditor) ->
       textEditor.getPath().endsWith('.exs')
+
     isPhoenixProject = (textEditor) ->
-      mixLockPath = projectPath(textEditor) + '/mix.lock'
+      project = projectPath(textEditor)
+      return false if not project
+      mixLockPath = path.join(project, 'mix.lock')
       try
         mixLockContent = fs.readFileSync mixLockPath, 'utf-8'
         mixLockContent.indexOf('"phoenix"') > 0
       catch
         false
-    parseError = (row, textEditor) ->
-      return unless row.startsWith('** ')
+
+    parseError = (toParse, textEditor) ->
+      ret = []
       re = ///
-        .*
-        \((.*)\)  # 1 - (TypeOfError)
-        \ ([^:]+) # 2 - file name
-        :(\d+):   # 3 - line
-        \ (.*)    # 4 - message
-        ///
-      reResult = re.exec(row)
-      return unless reResult?
-      ret =
-        #type: reResult[1]
-        type: "Error"
-        text: reResult[4]
-        filePath: projectPath(textEditor) + '/' + reResult[2]
-        range: helpers.rangeFromLineNumber(textEditor, reResult[3] - 1)
-    parseWarning = (row, textEditor) ->
+        \*\*[\ ]+
+        \((\w+)\)                  # 1 - (TypeOfError)
+        [\ ](?: # Two message formats.... mode one
+          ([\w\ ]+)                # 2 - Message
+          [\r\n]{1,2}.+[\r\n]{1,2} # Internal elixir code
+          [\ ]+(.+)                # 3 - File
+          :(\d+):                  # 4 - Line
+        |      # Or... mode two
+          (.+)                     # 5 - File
+          :(\d+):                  # 6 - Line
+          [\ ](.+)                 # 7 - Message
+        )
+        ///g
+      reResult = re.exec(toParse)
+      while reResult?
+        if (reResult[2]?)
+          ret.push
+            type: "Error"
+            text: '(' + reResult[1] + ') ' + reResult[2]
+            filePath: path.join(projectPath(textEditor), reResult[3])
+            range: helpers.rangeFromLineNumber(textEditor, reResult[4] - 1)
+        else
+          ret.push
+            type: "Error"
+            text: '(' + reResult[1] + ') ' + reResult[7]
+            filePath: path.join(projectPath(textEditor), reResult[5])
+            range: helpers.rangeFromLineNumber(textEditor, reResult[6] - 1)
+        reResult = re.exec(toParse)
+      ret
+
+    parseWarning = (toParse, textEditor) ->
+      ret = []
       re = ///
-        ([^:]*) # 1 - file name
-        :(\d+)  # 2 - line
+        ([^:]*) # 1 - File name
+        :(\d+)  # 2 - Line
         :\ warning
-        :\ (.*) # 3 - message
-        ///
-      reResult = re.exec(row)
-      return unless reResult?
-      ret =
-        type: "Warning"
-        text: reResult[3]
-        filePath: projectPath(textEditor) + '/' + reResult[1]
-        range: helpers.rangeFromLineNumber(textEditor, reResult[2] - 1)
+        :\ (.*) # 3 - Message
+        ///g
+      reResult = re.exec(toParse)
+      while reResult?
+        ret.push
+          type: "Warning"
+          text: reResult[3]
+          filePath: projectPath(textEditor) + '/' + reResult[1]
+          range: helpers.rangeFromLineNumber(textEditor, reResult[2] - 1)
+        reResult = re.exec(toParse)
+      ret
+
     handleResult = (textEditor) ->
       (compileResult) ->
         resultString = compileResult['stdout'] + "\n" + compileResult['stderr']
-        resultLines = resultString.split("\n")
-        errorStack = (parseError(line, textEditor) for line in resultLines unless !resultLines?)
-        warningStack = (parseWarning(line, textEditor) for line in resultLines unless !resultLines?)
+        errorStack = parseError(resultString, textEditor)
+        warningStack = parseWarning(resultString, textEditor)
         (error for error in errorStack.concat(warningStack) when error?)
+
     getFilePathDir = (textEditor) ->
       filePath = textEditor.getPath()
       path.dirname(filePath)
+
     getOpts = (textEditor) ->
       opts =
         cwd: projectPath(textEditor)
         throwOnStdErr: false
         stream: 'both'
+
     getDepsPa = (textEditor) ->
       env = if isTestFile(textEditor) then "test" else "dev"
       buildDir = path.join("_build", env, "lib")
@@ -111,25 +149,31 @@ module.exports =
           path.join(projectPath(textEditor), buildDir, item, "ebin")
       catch e
         []
+
     lintElixirc = (textEditor) =>
       elixircArgs = [
-        "--ignore-module-conflict", "--app", "mix", "--app", "ex_unit", "-o", os.tmpDir(),
+        "--ignore-module-conflict",
+        "--app", "mix",
+        "--app", "ex_unit",
+        "-o", os.tmpDir(),
       ]
       elixircArgs.push "-pa", item for item in getDepsPa(textEditor)
       elixircArgs.push textEditor.getPath()
       helpers.exec(@elixircPath, elixircArgs, getOpts(textEditor))
         .then(handleResult(textEditor))
+
     lintMix = (textEditor) =>
       helpers.exec(@mixPath, ['compile'], getOpts(textEditor))
         .then (handleResult(textEditor))
 
     provider =
       grammarScopes: ['source.elixir']
-      scope: 'file'
+      scope: 'project'
       lintOnFly: false
       name: 'Elixir'
-      lint: (textEditor) =>
-        if isForcedElixirc() or not isMixProject(textEditor) or isExsFile(textEditor) or isPhoenixProject(textEditor)
-          lintElixirc(textEditor)
+      lint: (textEditor) ->
+        if isForcedElixirc() or not isMixProject(textEditor) or
+          isExsFile(textEditor) or isPhoenixProject(textEditor)
+            lintElixirc(textEditor)
         else
           lintMix(textEditor)

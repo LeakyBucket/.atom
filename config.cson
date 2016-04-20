@@ -1,35 +1,41 @@
 "*":
-  editor:
-    fontSize: 12
-    invisibles: {}
-  "exception-reporting":
-    userId: "ded010c9-4771-09d1-10aa-674d795d0370"
-  welcome:
-    showOnStartup: false
-  metrics:
-    userId: "ae961babc3f969a4a4d932151eabf8d7e81bc5c2"
-  autosave:
-    enabled: true
-  whitespace:
-    ignoreWhitespaceOnCurrentLine: false
-  "ruby-test":
-    rspecAllCommand: "bundle exec rspec --tty"
-    specFramework: "rspec"
-    testAllCommand: "bundle exec rspec --tty"
-  "tree-view":
-    hideVcsIgnoredFiles: false
-  core:
-    destroyEmptyPanes: false
-    excludeVcsIgnoredPaths: false
   "atom-pair": {}
-  "git-diff": {}
-  "git-blame-plus": {}
-  "one-dark-ui": {}
-  tabs:
-    enableVcsColoring: true
-  "linter-elixirc": {}
-  "git-blame": {}
+  "autocomplete-elixir":
+    elixirPath: "/usr/local/bin/elixir"
+    erlangHome: "/usr/local/Cellar/erlang/18.2.1/bin"
   "autocomplete-plus":
     confirmCompletion: "tab"
     strictMatching: true
-  linter: {}
+  autosave:
+    enabled: true
+  core:
+    destroyEmptyPanes: false
+    excludeVcsIgnoredPaths: false
+  editor:
+    fontSize: 12
+    invisibles: {}
+    tabType: "soft"
+  "exception-reporting":
+    userId: "ded010c9-4771-09d1-10aa-674d795d0370"
+  "git-blame": {}
+  "git-blame-plus": {}
+  "git-diff": {}
+  linter:
+    showErrorPanel: false
+  "linter-elixirc": {}
+  "linter-rubocop":
+    command: "/Users/leakybucket/.gem/ruby/2.0.0/bin/rubocop"
+  metrics:
+    userId: "ae961babc3f969a4a4d932151eabf8d7e81bc5c2"
+  "one-dark-ui": {}
+  "ruby-test":
+    rspecAllCommand: "bundle exec rake"
+    specFramework: "rspec"
+  tabs:
+    enableVcsColoring: true
+  "tree-view":
+    hideVcsIgnoredFiles: false
+  welcome:
+    showOnStartup: false
+  whitespace:
+    ignoreWhitespaceOnCurrentLine: false
